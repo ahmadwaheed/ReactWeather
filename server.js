@@ -9,10 +9,11 @@ const PORT = process.env.PORT || 3000;
 
 //This will merge the traffic of https to http because heroku runs on http
 app.use(function(req,res,next){
-  if(req.headers['x-forwared-proto'] === 'http'){
-    next();
+  if(req.headers['x-forwared-proto'] === 'https'){
+    //next();
   }else {
-    res.redirect('http://' + req.hostname + req.url);
+  //  res.redirect('http://' + req.hostname + req.url);
+    next();
   }
 });
 //Lets add functionality to express application
