@@ -4,10 +4,22 @@ var express = require('express'); //takes string name of module, to get access
 //Create our App
 //express is a library we are passing as an function
 var app = express();
+const PORT = process.env.PORT || 3000;
 
+
+//This will merge the traffic of https to http because heroku runs on http
+app.use(function(req,res,next){
+  if(req.headers['x-forwared-proto'] === 'http'){
+    next();
+  }else {
+    res.redirect('http://' + req.hostname + req.url);
+  }
+});
 //Lets add functionality to express application
 app.use(express.static('public'));
 
-app.listen(3000,function(){
-  console.log('Express server is up on port 3000')
+//
+
+app.listen(PORT,function(){
+  console.log('Express server is up on port ' + PORT);
 });
