@@ -8,10 +8,10 @@ var ErrorModal = require('ErrorModal');
 var Weather = React.createClass({
   getInitialState: function() {
     return {
-        isLoading:false,
+        isLoading:false
     }
   },
-  handleSearch(location) {
+  handleSearch: function(location) {
     var that = this;
 
     //debugger;
@@ -26,14 +26,16 @@ var Weather = React.createClass({
         temp: temp,
         isLoading: false
       });
-    },function(errorMessage){
+
+    },function(e){
       that.setState({
-      isLoading: false});
-      alert(errorMessage);
+      isLoading: false,
+      errorMessage: e.message
   });
+});
   },
   render: function(){
-    var {isLoading,temp,location} = this.state;
+    var {isLoading,temp,location,errorMessage} = this.state;
 
     function renderMesage() {
       if (isLoading) {
@@ -43,11 +45,20 @@ var Weather = React.createClass({
       }
     }
 
+    function renderError() {
+      if(typeof errorMessage === 'string'){
+        return (
+          <ErrorModal message={errorMessage}/>
+        )
+      }
+    }
+
     return(
     <div>
       <h1 className="text-center">Get Weather</h1>
       <WeatherForm onSearch={this.handleSearch}/>
       {renderMesage()}
+      {renderError()}
     </div>
     )
   }
